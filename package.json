@@ -1,0 +1,22 @@
+{
+  "name": "react-mesto-auth",
+  "version": "1.0.0",
+  "description": "Используйте ваши предыдущие наработки по проекту Mesto. Это может быть работа 11-го спринта или его улучшенная версия после 2-х последних спринтов.",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ALB040570/react-mesto-auth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ALB040570/react-mesto-auth/issues"
+  },
+  "homepage": "https://github.com/ALB040570/react-mesto-auth#readme"
+}
