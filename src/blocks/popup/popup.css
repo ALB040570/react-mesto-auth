@@ -14,6 +14,13 @@
 @import url(./__error/_visible/popup__error_visible.css);
 @import url(./__input/_type_error/popup__input_type_error.css);
 @import url(./__button/_disabled/popup__button_disabled.css);
+@import url(./__input/_black/popup__input_black.css);
+@import url(./__title/_black/popup__title_black.css);
+@import url(./__button/_white/popup__button_white.css);
+@import url(./__button/_sing_in/popup__button_sing_in.css);
+@import url(./__image/_success/popup__image_success.css);
+@import url(./__image/_fail/popup__image_fail.css);
+
 
 
 .popup {

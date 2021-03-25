@@ -1,15 +1,54 @@
 import optionsForApi from './constants.js';
-// класс Api 
+// класс Api
 
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
+    this._baseUrlForAuth = options.baseUrlForAuth;
     this._headers = options.headers;
+    this._headersForAuth = options.headersForAuth;
     this._usersMe = options.dir.usersMe;
     this._cards = options.dir.cards;
     this._likes = options.dir.likes;
     this._avatar = options.dir.avatar;
+    this._signIn = options.dir.signIn;
+    this._signUp = options.dir.signUp;
   }
+  //
+
+  //Отправка на сервер данных регистрации пользоваателя
+  register(email, password) {
+    return fetch(this._baseUrlForAuth + this._signUp, {
+      method: 'POST',
+      headers: this._headersForAuth,
+      body: JSON.stringify({email, password})
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+  };
+
+  //Отправка на сервер данных для авторизации
+  authorize(email, password) {
+    return fetch(this._baseUrlForAuth + this._signIn, {
+      method: 'POST',
+      headers: this._headersForAuth,
+      body: JSON.stringify({email, password})
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+  };
+
+  // запрос для проверки валидности токена
+  getContent(token) {
+    return fetch(this._baseUrlForAuth + this._usersMe, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+  };
+
   //Загрузка карточек с сервера
   getCards() {
     return fetch(this._baseUrl + this._cards, {
@@ -60,7 +99,7 @@ class Api {
     })
       .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
   }
-  
+
   //функция объединяет и вызывает методы обновления/снятия лайка
   changeLikeCardStatus(cardId, isLike) {
     const method = isLike?'PUT':'DELETE';
@@ -99,6 +138,8 @@ class Api {
   })
       .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
   }
+
+
 }
 const api = new Api(optionsForApi);
 
