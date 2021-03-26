@@ -92,10 +92,13 @@ function App() {
         console.debug(res);
         setInfoTooltipOpen(true);
         setTypeInfo('success');
-
       })
       .catch((e) => console.log());
   }
+  useEffect(()=>{
+      tokenCheck();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn])
 
   const tokenCheck = useCallback(() => {
     const jwt = localStorage.getItem('jwt');
@@ -103,10 +106,10 @@ function App() {
       api
         .getContent(jwt)
         .then((res) => {
+
           if (res){
             setUserData({
-              ...userData,
-              email: res.email
+              email: res.data.email
             })
             setLoggedIn(true);
           }
@@ -115,11 +118,9 @@ function App() {
       } else {
         setLoggedIn(false);
       }
-    },[userData])
+    },[])
 
-    useEffect(()=>{
-      tokenCheck();
-    }, [tokenCheck])
+
 
   if (loggedIn===null) {
     return 'Загрузка...'
@@ -168,9 +169,10 @@ function App() {
     userInfoFromForm
     .then((userInfo) => {
       setCurrenUser(userInfo);
+      closeAllPopups();
       })
     .catch((err) => {console.log(err);});
-      closeAllPopups();
+
   }
 
   const handleUpdateAvatar=(data)=> {
@@ -178,9 +180,10 @@ function App() {
     avatarFromForm
     .then((userInfo) => {
       setCurrenUser(userInfo);
+      closeAllPopups();
       })
     .catch((err) => {console.log(err);});
-      closeAllPopups();
+
   }
 
   const handleAddPlaceSubmit=(data)=> {
@@ -188,9 +191,10 @@ function App() {
     cardFromForm
     .then((newCard) => {
         setCards([newCard, ...cards]);
+        closeAllPopups();
       })
     .catch((err) => {console.log(err);});
-      closeAllPopups();
+
   }
 
   return (
@@ -199,6 +203,7 @@ function App() {
       <Switch>
         <ProtectedRoute exact path="/"
           loggedIn={loggedIn}
+          userEmail={userData.email}
           component={Main}
           onSignOut={onSignOut}
           onEditProfile={()=>{handleEditProfileClick(true)}}

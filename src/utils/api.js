@@ -23,8 +23,8 @@ class Api {
       headers: this._headersForAuth,
       body: JSON.stringify({email, password})
     })
-    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-  };
+    .then(this._checkResponse)
+  }
 
   //Отправка на сервер данных для авторизации
   authorize(email, password) {
@@ -33,21 +33,20 @@ class Api {
       headers: this._headersForAuth,
       body: JSON.stringify({email, password})
     })
-    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-  };
+    .then(this._checkResponse)
+  }
 
   // запрос для проверки валидности токена
   getContent(token) {
     return fetch(this._baseUrlForAuth + this._usersMe, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       }
     })
-    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-  };
+    .then(this._checkResponse)
+  }
 
   //Загрузка карточек с сервера
   getCards() {
@@ -55,7 +54,7 @@ class Api {
       method: 'GET',
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
   //Загрузка информации о пользователе с сервера
   getUsersInfo() {
@@ -63,7 +62,7 @@ class Api {
       method: 'GET',
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
   //Редактирование профиля
   patchUsersInfo(data) {
@@ -73,9 +72,9 @@ class Api {
       body: JSON.stringify({
         name: data.name,
         about: data.about
+      })
     })
-  })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
 
 
@@ -89,7 +88,7 @@ class Api {
         link: data.link
       })
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
   //Удаление карточки
   deleteCard(cardId) {
@@ -97,7 +96,7 @@ class Api {
       method: 'DELETE',
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
 
   //функция объединяет и вызывает методы обновления/снятия лайка
@@ -107,7 +106,7 @@ class Api {
       method: method,
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
 
 
@@ -117,7 +116,7 @@ class Api {
       method: 'PUT',
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
   //Cнятие лайка
   deleteLike(cardId) {
@@ -125,7 +124,7 @@ class Api {
       method: 'DELETE',
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
   //Обновление аватара пользователя
   patchAvatar(data) {
@@ -134,11 +133,17 @@ class Api {
       headers: this._headers,
       body: JSON.stringify({
         avatar: data.avatar
+        })
     })
-  })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(this._checkResponse)
   }
 
+  _checkResponse(res) {
+    if (res.ok) {
+        return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`);
+  }
 
 }
 const api = new Api(optionsForApi);

@@ -10,7 +10,7 @@ function Main(props) {
 
   return (
     <div className="page">
-      <Header buttonName="Выйти" onClick={props.onSignOut}/>
+      <Header buttonName="Выйти" userEmail={props.userEmail} onClick={props.onSignOut}/>
       <main className="content">
         <section className="profile">
           <div className="profile__grid">
