@@ -7,7 +7,7 @@ import AddPlacePopup from './AddPlacePopup.js';
 import Login from './Login.js';
 import Register from './Register.js';
 import InfoTooltip from './InfoTooltip.js';
-import {useState, useEffect, useCallback} from 'react';
+import {useState, useEffect} from 'react';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import ProtectedRoute from './ProtectedRoute';
@@ -96,29 +96,28 @@ function App() {
       .catch((e) => console.log());
   }
   useEffect(()=>{
-      tokenCheck();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+      const jwt = localStorage.getItem('jwt');
+      if (jwt){
+        api
+          .getContent(jwt)
+          .then((res) => {
+
+            if (res){
+              setUserData({
+                email: res.data.email
+              })
+              setLoggedIn(true);
+            }
+          })
+          .catch (e=>console.error(e))
+        } else {
+          setLoggedIn(false);
+        }
+
   }, [loggedIn])
 
-  const tokenCheck = useCallback(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt){
-      api
-        .getContent(jwt)
-        .then((res) => {
 
-          if (res){
-            setUserData({
-              email: res.data.email
-            })
-            setLoggedIn(true);
-          }
-        })
-        .catch (e=>console.error(e))
-      } else {
-        setLoggedIn(false);
-      }
-    },[])
 
 
 
