@@ -67,6 +67,7 @@ function App() {
           localStorage.setItem('jwt', data.token);
           setLoggedIn(true);
           setInfoTooltipOpen(false);
+          setUserData({email: email})
         }
         if (data.statusCode===400){
           setInfoTooltipOpen(true);
@@ -115,7 +116,7 @@ function App() {
           setLoggedIn(false);
         }
 
-  }, [loggedIn])
+  },[])
 
 
 
